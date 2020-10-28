@@ -43,7 +43,7 @@ pub fn parse_html_tree(document: &str) -> Result<(), Box<dyn std::error::Error>>
 
         // Create a temporary file.
         let temp_directory = env::temp_dir();
-        let const_color = temp_directory.join("const_colors.rs");
+        let const_color = temp_directory.join("segmdl2_assets_font.rs");
 
         // Open a file in write-only (ignoring errors).
         // This creates the file if it does not exist (and empty the file if it exists).
@@ -53,13 +53,15 @@ pub fn parse_html_tree(document: &str) -> Result<(), Box<dyn std::error::Error>>
         writeln!(&mut file, "/// Segoe MDL2 Assets Icons: definition of supported glyph constants\n").unwrap();
         writeln!(&mut file, "/*").unwrap();
         writeln!(&mut file, " * CSS Definiton:").unwrap();
-        writeln!(&mut file, "/*").unwrap();
+        writeln!(&mut file, " */").unwrap();
         writeln!(&mut file, "// CSS-url:     https://aka.ms/SegoeFonts").unwrap();
         writeln!(&mut file, "// font-family: SegoeMDL2Assets").unwrap();
         writeln!(&mut file, "// font-weight: normal;").unwrap();
         writeln!(&mut file, "// font-style:  regular;").unwrap();
         writeln!(&mut file, "// font-format: ttf").unwrap();
         writeln!(&mut file, "// font-src:    SegMdl2.ttf").unwrap();
+        writeln!(&mut file, "// import-tool: https://github.com/rzerres/parse_segoe_mdl2.git").unwrap();
+        writeln!(&mut file, "// cheet-sheet: http://modernicons.io/segoe-mdl2/cheatsheet/").unwrap();
         writeln!(&mut file, "\n").unwrap();
 
         for r in 0..table_rows {
@@ -76,9 +78,9 @@ pub fn parse_html_tree(document: &str) -> Result<(), Box<dyn std::error::Error>>
             } else {
                 // format the rust code color constant
                 if unicode_codepoint != "0000" && color_name != "NONE" {
-                    writeln!(&mut file, "pub const SEG_{}: &str = 'u{{{}}}';", color_name.to_uppercase(), unicode_codepoint.to_lowercase()).unwrap();
+                    writeln!(&mut file, "pub const SEG_{}: &str = \"\\u{{{}}}\";", color_name.to_uppercase(), unicode_codepoint.to_lowercase()).unwrap();
                 } else {
-                    writeln!(&mut file, "// pub const SEG_{}: &str = 'u{{{}}}';", color_name.to_uppercase(), unicode_codepoint.to_lowercase()).unwrap();
+                    writeln!(&mut file, "// pub const SEG_{}: &str = \"\\u{{{}}}\";", color_name.to_uppercase(), unicode_codepoint.to_lowercase()).unwrap();
                 }
             }
         };
