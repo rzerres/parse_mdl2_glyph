@@ -1,5 +1,5 @@
 [package]
-name = "parse_segoe_mdl2"
+name = "parse_mdl2_glyphs"
 version = "0.1.0"
 authors = ["Ralf Zerres <ralf.zerres@networkx.de>"]
 edition = "2018"
