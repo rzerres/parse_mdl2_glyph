@@ -9,8 +9,8 @@ use std::env;
 use std::fs::File;
 use std::io::{Read, Write};
 
-/// parse a given html document
-pub fn parse_html_tree(document: &str) -> Result<(), Box<dyn std::error::Error>> {
+/// parse Segoe UI html document
+pub fn parse_segoe_html_tree(document: &str) -> Result<(), Box<dyn std::error::Error>> {
 
     //use kuchiki::traits::*;
     use kuchiki::traits::TendrilSink;
@@ -39,7 +39,7 @@ pub fn parse_html_tree(document: &str) -> Result<(), Box<dyn std::error::Error>>
     let table_rows = table_rows_data.len();
 
     if table_rows > 0 {
-        println!("\nnumber of table rows: {:?}", table_rows);
+        println!("number of table rows: {:?}", table_rows);
 
         // Create a temporary file.
         let temp_directory = env::temp_dir();
@@ -91,15 +91,105 @@ pub fn parse_html_tree(document: &str) -> Result<(), Box<dyn std::error::Error>>
     Ok(())
 }
 
+/// parse MDL2 html document
+pub fn parse_mdl2_html_tree(document: &str) -> Result<(), Box<dyn std::error::Error>> {
+
+    //use kuchiki::traits::*;
+    use kuchiki::traits::TendrilSink;
+
+    // kuchiki parses the html input, get an instance
+    // ref: https://stackoverflow.com/questions/56329121/how-to-get-only-text-node-with-kuchiki
+    let dom = kuchiki::parse_html().one(document);
+
+    let selector = "tr";
+    let selector_rows_data = dom
+        .select(selector)
+        .unwrap()
+        .collect::<Vec<_>>();
+    let selector_rows = selector_rows_data.len();
+
+    // process all table rows
+    if selector_rows > 0 {
+        println!("\nnumber of table rows: {:?}", selector_rows);
+
+        // Create a temporary file.
+        let temp_directory = env::temp_dir();
+        let target_file = temp_directory.join("mdl2_assets_font.rs");
+
+        // Open a file in write-only (ignoring errors).
+        // This creates the file if it does not exist (and empty the file if it exists).
+        let mut file = File::create(&target_file).unwrap();
+
+        // write the file header
+        writeln!(&mut file, "/// MDL2 Assets Icons: definition of supported glyph constants\n").unwrap();
+        writeln!(&mut file, "/*").unwrap();
+        writeln!(&mut file, " * CSS Definiton:").unwrap();
+        writeln!(&mut file, " */").unwrap();
+        writeln!(&mut file, "// CSS-url:     https://github.com/scottdorman/mdl2-icons/tree/master/css/").unwrap();
+        writeln!(&mut file, "// font-family: 'MDL2'").unwrap();
+        writeln!(&mut file, "// font-weight: normal").unwrap();
+        writeln!(&mut file, "// font-style:  normal").unwrap();
+        writeln!(&mut file, "// font-format: ttf").unwrap();
+        writeln!(&mut file, "// font-src:    mdl2.ttf").unwrap();
+        writeln!(&mut file, "// cheet-sheet: https://github.com/scottdorman/mdl2-icons/icons.html").unwrap();
+        writeln!(&mut file, "// import-tool: https://github.com/rzerres/parse_segoe_mdl2.git").unwrap();
+        writeln!(&mut file, "\n").unwrap();
+
+        for r in 0..selector_rows {
+            // get child data for given table row
+            let child_data = selector_rows_data[r]
+                .as_node()
+                .children()
+                .collect::<Vec<_>>();
+            //let childs = child_data.len();
+            //println!("row {:?}: has {} childs", &r, &childs);
+
+            let child_unicode = &*child_data[0].text_contents();
+            //println!("unicode: {:?}", &child_unicode);
+            let child_name = &*child_data[2].text_contents();
+            //println!("unicode: {:?}", &child_name);
+            let child_description = &*child_data[3].text_contents();
+            //println!("unicode: {:?}", &child_description);
+
+            // for t in 0..childs {
+            //    println!("texts[{}]: {:?}", &t, &*child_data[t].text_contents());
+            // }
+
+            if r == 0 {
+                println!("table rows child {} [Header]: {}, {}, {}",
+                         r,
+                         &child_unicode,
+                         &child_name,
+                         &child_description
+                );
+            } else {
+                // format the rust code color constant
+                if child_unicode != "0000" && child_description != "NONE" {
+                    writeln!(&mut file, "pub const MDL2_{}: &str = \"\\u{{{}}}\";",
+                             child_description.to_uppercase(),
+                             child_unicode.to_lowercase()).unwrap();
+                } else {
+                    writeln!(&mut file, "// pub const MDL2_{}: &str = \"\\u{{{}}}\";",
+                             child_description.to_uppercase(),
+                             child_unicode.to_lowercase()).unwrap();
+                }
+            }
+        };
+        println!("Wrote {} glyph constants to: {:?}", selector_rows, &*target_file);
+    }
+
+    Ok(())
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // hardcoded: import file, open read-only
-    let filename = "./segoe_codepoints.html";
+    let filename = "./mdl2_codepoints.html";
     let mut content = String::new();
     match File::open(filename) {
         // The file is open (no error).
         Ok(mut file) => {
             // Read all the file content into a variable (ignoring the result of the operation).
-            println!("\nreading html content from '{:?}'\n", filename);
+            println!("reading html content from {:?}", filename);
             file.read_to_string(&mut content).unwrap();
         },
         // Error handling.
@@ -113,7 +203,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     //let mut stdin = io::stdin(); // We get `Stdin` here.
     //stdin.read_to_string(&mut buffer)?;
 
-    parse_html_tree(&content)?;
+    //parse_segoe_html_tree(&content)?;
+    parse_mdl2_html_tree(&content)?;
 
     Ok(())
 }
@@ -123,7 +214,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_html() {
+    fn test_segoe_html() {
         // raw string: the html content
         let html = r"
         <DOCTYPE html>
@@ -161,7 +252,7 @@ mod tests {
         </html>
         ";
 
-        let _ = parse_html_tree(&html);
+        let _ = parse_segoe_html_tree(&html);
         //assert_eq!(inlined, expected)
     }
 }
