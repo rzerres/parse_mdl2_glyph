@@ -1,13 +1,38 @@
-# parse_segoe_mdl2
+# parse_mdl2_glyph
 
 This little helper tool has a single purpose:
 
-* find the unicode points and their descriptions
-  for Microsoft® Segoe MDL2 icon fonts
-* create a rust source file listing all glyphs as const
+ * find the unicode points and their descriptions
+   for MDL2 icon fonts
+ * create a rust source file listing all glyphs as const
 
-Because a parsable CSS description is missing, the information
-is extracted from the Microsoft online documentation page (html source).
+## Microsoft® Segoe font family
+ The Microsoft® Segoe font family is lagging a parsable CSS
+ description.  It's license (Eula) states very clear: "You may use the
+ Segoe MDL2 Assets and Segoe UI fonts or glyphs included solely to
+ design, develop and test your programs that run on a Microsoft
+ Platform" It does not allow to use and redistribute the fonts.  Glyph
+ information is extracted from the Microsoft online documentation page
+ (html source).
+
+Documentation is published via the the following URLs. Because a
+parsable CSS description is missing, the information is extracted from
+the Microsoft online documentation page.
+
+* [Segoe MDL2 icons](https://docs.microsoft.com/en-us/windows/uwp/design/style/segoe-ui-symbol-font#icon-list)
+
+
+## MDL2 icon fonts
+An MIT licensed implementation of MDL2 icons is developed by Scott Dorman. The project is published
+on Github.
+
+* [MDL2 icons](https://github.com/scottdorman/mdl2-icons/)
+
+##
+An open source replacement for the Segoe fonts has been developed as well. The project is publsihed
+on Github.
+
+* [Selawik](https://github.com/Microsoft/Selawik)
 
 ## Overview
 
@@ -34,11 +59,11 @@ OPENSSL_INCLUDE_DIR=/usr/include/openssl-1.0 OPENSSL_LIB_DIR=/usr/lib/openssl-1.
 
 ## Installation
 
-### clone the repostiory
+### clone the repository
 
 ```sh
-$ git clone https://github.com/rzerres/parse_segoe_mdl2.git
-$ cd parse_segoe_mdl2
+$ git clone https://github.com/rzerres/parse_mdl2_glyphs.git
+$ cd parse_mdl2_glyphs
 ```
 ### build/run the binary
 
