@@ -12,27 +12,27 @@ env:
 jobs:
   lint:
   name: Lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v2
-         with:
-         toolchain: stable
-         override: true
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v2
+      with:
+        toolchain: stable
+        override: true
 
-      # make sure all code has been formatted with rustfmt
-      - run: rustup component add rustfmt
-      - name: check rustfmt
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: -- --check --color always
-      - run: rustup component add clippy
-      - name: check clippy
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --all-targets -- -D warnings
+    # make sure all code has been formatted with rustfmt
+    - run: rustup component add rustfmt
+    - name: check rustfmt
+      uses: actions-rs/cargo@v1
+      with:
+        command: fmt
+        args: -- --check --color always
+    - run: rustup component add clippy
+    - name: check clippy
+      uses: actions-rs/cargo@v1
+      with:
+        command: clippy
+        args: --all-targets -- -D warnings
 
   build_and_test:
 
