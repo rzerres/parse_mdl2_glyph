@@ -16,9 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v2
-	with:
-	 toolchain: stable
-	 override: true
+         with:
+         toolchain: stable
+         override: true
 
       # make sure all code has been formatted with rustfmt
       - run: rustup component add rustfmt
