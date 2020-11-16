@@ -35,9 +35,7 @@ jobs:
         args: --all-targets -- -D warnings
 
   build_and_test:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Build
