@@ -166,11 +166,15 @@ pub fn parse_mdl2_html_tree(document: &str) -> Result<(), Box<dyn std::error::Er
                 // format the rust code color constant
                 if child_unicode != "0000" && child_description != "NONE" {
                     writeln!(&mut file, "pub const MDL2_{}: &str = \"\\u{{{}}}\";",
-                             child_description.to_uppercase(),
+                             child_name
+                             .replace("-", "_")
+                             .to_uppercase(),
                              child_unicode.to_lowercase()).unwrap();
                 } else {
                     writeln!(&mut file, "// pub const MDL2_{}: &str = \"\\u{{{}}}\";",
-                             child_description.to_uppercase(),
+                             child_name
+                             .replace("-", "_")
+                             .to_uppercase(),
                              child_unicode.to_lowercase()).unwrap();
                 }
             }
