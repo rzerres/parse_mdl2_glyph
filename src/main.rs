@@ -125,14 +125,15 @@ pub fn parse_mdl2_html_tree(document: &str) -> Result<(), Box<dyn std::error::Er
         writeln!(&mut file, "/*").unwrap();
         writeln!(&mut file, " * CSS Definiton:").unwrap();
         writeln!(&mut file, " */").unwrap();
-        writeln!(&mut file, "// CSS-url:     https://github.com/scottdorman/mdl2-icons/tree/master/css/").unwrap();
-        writeln!(&mut file, "// font-family: 'MDL2'").unwrap();
-        writeln!(&mut file, "// font-weight: normal").unwrap();
-        writeln!(&mut file, "// font-style:  normal").unwrap();
-        writeln!(&mut file, "// font-format: ttf").unwrap();
-        writeln!(&mut file, "// font-src:    mdl2.ttf").unwrap();
-        writeln!(&mut file, "// cheet-sheet: https://github.com/scottdorman/mdl2-icons/icons.html").unwrap();
-        writeln!(&mut file, "// import-tool: https://github.com/rzerres/parse_segoe_mdl2.git").unwrap();
+        writeln!(&mut file, "// CSS-url:      https://github.com/scottdorman/mdl2-icons/tree/master/css/").unwrap();
+        writeln!(&mut file, "// font-family:  'MDL2'").unwrap();
+        writeln!(&mut file, "// font-weight:  normal").unwrap();
+        writeln!(&mut file, "// font-style:   normal").unwrap();
+        writeln!(&mut file, "// font-format:  otf").unwrap();
+        writeln!(&mut file, "// font-src:     mdl2.otf").unwrap();
+        writeln!(&mut file, "// font-release: 1.1.0").unwrap();
+        writeln!(&mut file, "// cheet-sheet:  https://github.com/scottdorman/mdl2-icons/icons.html").unwrap();
+        writeln!(&mut file, "// import-tool:  https://github.com/rzerres/parse_segoe_mdl2.git").unwrap();
         writeln!(&mut file, "\n").unwrap();
 
         for r in 0..selector_rows {
