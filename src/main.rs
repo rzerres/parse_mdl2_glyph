@@ -60,9 +60,9 @@ pub fn parse_segoe_html_tree(document: &str) -> Result<(), Box<dyn std::error::E
         writeln!(&mut file, "// font-style:  regular;").unwrap();
         writeln!(&mut file, "// font-format: ttf").unwrap();
         writeln!(&mut file, "// font-src:    SegMdl2.ttf").unwrap();
-        writeln!(&mut file, "// import-tool: https://github.com/rzerres/parse_segoe_mdl2.git").unwrap();
         writeln!(&mut file, "// cheet-sheet: http://modernicons.io/segoe-mdl2/cheatsheet/").unwrap();
-        writeln!(&mut file, "\n").unwrap();
+        writeln!(&mut file, "// import-tool:  https://github.com/rzerres/parse_mdl2_glyphs.git").unwrap();
+        writeln!(&mut file, "").unwrap();
 
         for r in 0..table_rows {
             // get concatenated string for given table row
@@ -133,8 +133,8 @@ pub fn parse_mdl2_html_tree(document: &str) -> Result<(), Box<dyn std::error::Er
         writeln!(&mut file, "// font-src:     mdl2.otf").unwrap();
         writeln!(&mut file, "// font-release: 1.1.0").unwrap();
         writeln!(&mut file, "// cheet-sheet:  https://github.com/scottdorman/mdl2-icons/icons.html").unwrap();
-        writeln!(&mut file, "// import-tool:  https://github.com/rzerres/parse_segoe_mdl2.git").unwrap();
-        writeln!(&mut file, "\n").unwrap();
+        writeln!(&mut file, "// import-tool:  https://github.com/rzerres/parse_mdl2_glyphs.git").unwrap();
+        writeln!(&mut file, "").unwrap();
 
         for r in 0..selector_rows {
             // get child data for given table row
